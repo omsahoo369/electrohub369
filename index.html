@@ -6,5 +6,266 @@
   <title>Electro Hub</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
-  ...
+
+  <style>
+    :root {
+      --bg-intro: #e1f7f5;
+      --bg-tabs: #fff3e6;
+      --bg-content: #ffeacc;
+      --bg-cards: #e6f4f1;
+      --bg-shop: #fce4ec;
+      --bg-about: #000;
+      --text-color: #000;
+    }
+
+    [data-theme="dark"] {
+      --bg-intro: #1a1a1a;
+      --bg-tabs: #222;
+      --bg-content: #333;
+      --bg-cards: #2b2b2b;
+      --bg-shop: #444;
+      --bg-about: #000;
+      --text-color: #eee;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      font-family: 'Orbitron', sans-serif;
+      overflow-x: hidden;
+      background-color: var(--bg-intro);
+      color: var(--text-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(0, 255, 255, 0.1) 0%, transparent 60%);
+      transition: background 0.2s ease;
+      z-index: 1;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      background: #00ffe1;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      z-index: 999;
+    }
+
+    .section {
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .intro { background: var(--bg-intro); background-attachment: fixed; }
+    .tabs-section { background: var(--bg-tabs); background-attachment: fixed; }
+    .content-container .content { background: var(--bg-content); }
+    .cards-section { background: var(--bg-cards); background-attachment: fixed; }
+    .shop-section { background: var(--bg-shop); }
+    .about { background: var(--bg-about); color: #f1f1f1; }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .tab {
+      padding: 0.75rem 1.5rem;
+      background: #ccc;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .tab.active { background: #ffa94d; font-weight: bold; }
+
+    .content-container .content {
+      margin: 0 auto;
+      padding: 2rem;
+      width: 80%;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .hidden { display: none; }
+
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 40px;
+    }
+
+    .card {
+      background: #fff;
+      border: 2px solid #00b4d8;
+      width: 300px;
+      border-radius: 10px;
+      padding: 1rem;
+      box-shadow: 0 0 15px #90e0ef;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover { transform: scale(1.05); }
+
+    .card img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .shop-btn {
+      background-color: #00ffe1;
+      color: #000;
+      font-size: 1.5rem;
+      padding: 20px 60px;
+      border: none;
+      border-radius: 50px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .shop-btn::before {
+      content: "";
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 0; height: 0;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 100%;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      transition: width 0.5s ease, height 0.5s ease;
+    }
+
+    .shop-btn:hover::before {
+      width: 300px; height: 300px;
+    }
+
+    footer {
+      background: #111;
+      color: #ccc;
+      padding: 20px;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .tabs { flex-direction: column; }
+      .cards { flex-direction: column; }
+    }
+  </style>
+</head>
+
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+  <section class="section intro">
+    <h1>Welcome to Electro Hub</h1>
+    <p>Your one-stop hub for all things ESP, Raspberry Pi, and Arduino.</p>
+  </section>
+
+  <section class="section tabs-section">
+    <div class="tabs">
+      <div class="tab active" data-tab="0">ESP</div>
+      <div class="tab" data-tab="1">Raspberry Pi</div>
+      <div class="tab" data-tab="2">Arduino</div>
+    </div>
+    <div class="content-container">
+      <div class="content" id="content-0">ESP is great for Wi-Fi/Bluetooth-based IoT projects and comes in models like ESP8266 and ESP32.</div>
+      <div class="content hidden" id="content-1">Raspberry Pi is a credit-card-sized computer used for automation, AI, and embedded applications.</div>
+      <div class="content hidden" id="content-2">Arduino is a microcontroller board perfect for beginners and used in a wide range of hobbyist projects.</div>
+    </div>
+  </section>
+
+  <section class="section cards-section">
+    <h2>Top Modules</h2>
+    <div class="cards">
+      <div class="card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/38/ESP32-WROOM-32.jpg" alt="ESP32">
+        <h3>ESP32</h3>
+        <p>Dual-core Wi-Fi & Bluetooth SOC</p>
+        <a href="https://en.wikipedia.org/wiki/ESP32" target="_blank">Learn More</a>
+      </div>
+      <div class="card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Raspberry_Pi_4_Model_B_-_Side.jpg" alt="Raspberry Pi">
+        <h3>Raspberry Pi 4</h3>
+        <p>4GB RAM, USB-C power, dual monitor</p>
+        <a href="https://en.wikipedia.org/wiki/Raspberry_Pi" target="_blank">Learn More</a>
+      </div>
+      <div class="card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/38/Arduino_Uno_-_R3.jpg" alt="Arduino Uno">
+        <h3>Arduino Uno</h3>
+        <p>ATmega328P microcontroller, USB power</p>
+        <a href="https://en.wikipedia.org/wiki/Arduino_Uno" target="_blank">Learn More</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section shop-section">
+    <h2>Get Your Components</h2>
+    <button class="shop-btn" onclick="window.open('https://www.amazon.in/s?k=electronic+components', '_blank')">Shop</button>
+  </section>
+
+  <section class="section about">
+    <h2>About Electro Hub</h2>
+    <p>We empower students, engineers, and tinkerers with quality information and easy access to powerful microcontroller boards.</p>
+    <p>Join our community of over <strong>5000+ enthusiasts</strong>.</p>
+  </section>
+
+  <footer>
+    &copy; 2025 Electro Hub. All rights reserved.
+  </footer>
+
+  <script>
+    const tabs = document.querySelectorAll('.tab');
+    const contents = document.querySelectorAll('.content');
+    let current = 0;
+
+    function showTab(index) {
+      tabs.forEach(tab => tab.classList.remove('active'));
+      contents.forEach(content => content.classList.add('hidden'));
+      tabs[index].classList.add('active');
+      contents[index].classList.remove('hidden');
+    }
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => {
+        current = index;
+        showTab(index);
+      });
+    });
+
+    setInterval(() => {
+      current = (current + 1) % tabs.length;
+      showTab(current);
+    }, 5000);
+
+    document.addEventListener('mousemove', e => {
+      document.body.style.setProperty('--x', `${e.clientX}px`);
+      document.body.style.setProperty('--y', `${e.clientY}px`);
+    });
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
+    }
+  </script>
+</body>
 </html>
